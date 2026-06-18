@@ -27,10 +27,8 @@ public class TodoListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ServletContext application = getServletContext();
 		List<TodoListInfo> todoList = dao.getTodoList();
-		System.out.println(todoList);
 		
 		todoList.sort(Comparator.<TodoListInfo, LocalDateTime>comparing(TodoListInfo::getDeadLine).thenComparing(TodoListInfo::getPriority));
-		System.out.println(todoList);
 		
 		application.setAttribute("todoList", todoList);
 		LocalDateTime now = LocalDateTime.now();
