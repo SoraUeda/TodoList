@@ -27,7 +27,6 @@ public class TodoListDAO  {
 					+ "databaseName=todolist_task;";
 		return DriverManager.getConnection(url, "sa", "password");
 	}
-	
 	//全件取得
 	public List<TodoListInfo> getTodoList(){
 		List<TodoListInfo> todoList = new ArrayList<>();

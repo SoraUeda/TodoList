@@ -3,8 +3,7 @@
 <%@page import="java.util.List"%>
 <%@page import="model.TodoListInfo"%>
 <%@taglib prefix="c" uri="jakarta.tags.core"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>

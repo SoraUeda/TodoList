@@ -106,5 +106,4 @@ public class TodoListServlet extends HttpServlet {
 		application.setAttribute("todoList", dao.getTodoList());
 		request.getRequestDispatcher("WEB-INF/todolist.jsp").forward(request, response);
 	}
-
 }

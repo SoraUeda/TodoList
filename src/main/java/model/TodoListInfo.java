@@ -90,6 +90,5 @@ public class TodoListInfo implements Serializable {
 
 	public void setDelete(String delete) {
 		this.delete = delete;
-	}
-		
+	}	
 }
