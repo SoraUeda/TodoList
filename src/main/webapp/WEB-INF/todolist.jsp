@@ -43,13 +43,13 @@ List<TodoListInfo> todoList = (List<TodoListInfo>) application.getAttribute("tod
 			<td>優先度</td>
 		</tr>
 		<c:forEach var="task" items="${ todoList }">
-			<c:if test="${ task.completion == '未完了' and task.delete != '削除' }">
+			<c:if test="${ task.completion eq '未完了' and task.delete ne '削除' }">
 				<tr>
 					<td>${ task.taskName }</td>
 					<td>${ task.deadLine }</td>
 					<td>${ task.priority }</td>
 					<c:choose>
-						<c:when test="${ task.start == '着手' }">
+						<c:when test="${ task.start eq '着手' }">
 							<td>
 								<form action="TodoListServlet" method="post">
 									<input type="hidden" name="id" value="${ task.id }"> 
@@ -91,7 +91,7 @@ List<TodoListInfo> todoList = (List<TodoListInfo>) application.getAttribute("tod
 			<td>完了日時</td>
 		</tr>
 		<c:forEach var="task" items="${ todoList }">
-			<c:if test="${task.completion == '完了' and task.delete != '削除' }">
+			<c:if test="${task.completion eq '完了' and task.delete ne '削除' }">
 
 				<tr>
 					<td>${ task.taskName }</td>
