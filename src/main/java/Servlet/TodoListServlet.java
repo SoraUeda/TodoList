@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import dao.TodoListDAO;
@@ -25,15 +26,17 @@ public class TodoListServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ServletContext application = getServletContext();
-		List<TodoListInfo> todoList = (List<TodoListInfo>)application.getAttribute("todoList");
+		List<TodoListInfo> todoList = dao.getTodoList();
+		System.out.println(todoList);
 		
-		if (todoList == null ) {
-			application.setAttribute("todoList", dao.getTodoList());
-		} 
+		todoList.sort(Comparator.<TodoListInfo, LocalDateTime>comparing(TodoListInfo::getDeadLine).thenComparing(TodoListInfo::getPriority));
+		System.out.println(todoList);
+		
+		application.setAttribute("todoList", todoList);
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 		String formattedDate = now.format(formatter);
-		request.setAttribute("date_now", formattedDate);
+		request.setAttribute("date_tomorrow", formattedDate);
 		request.getRequestDispatcher("WEB-INF/todolist.jsp").forward(request, response);
 	}
 	
@@ -61,10 +64,13 @@ public class TodoListServlet extends HttpServlet {
 		}
 		
 		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime tomorrow = now.plusDays(1);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String formattedDate = now.format(formatter);
 		
-		ServletContext application = getServletContext();	
+		String formattedDateNow = now.format(formatter);
+		String formattedDateTomorrow = tomorrow.format(formatter);
+		
+		ServletContext application = getServletContext();
 		
 		switch(action) {
 		case "新規作成":
@@ -73,7 +79,7 @@ public class TodoListServlet extends HttpServlet {
 					request.setAttribute("error_taskName", "空白は許可されていません。");
 				}
 				if(deadLine.isBefore(now)) {
-					request.setAttribute("error_deadLine", formattedDate + "以降を選択してください");
+					request.setAttribute("error_deadLine", formattedDateNow + "以降を選択してください");
 				}
 			}else {
 				request.setAttribute("msg", "新しいタスクを追加しました!!");
@@ -102,8 +108,10 @@ public class TodoListServlet extends HttpServlet {
 			dao.updateDelete(id);
 			break;
 		}
-		request.setAttribute("date_now", formattedDate);
-		application.setAttribute("todoList", dao.getTodoList());
+		List<TodoListInfo> todoList = dao.getTodoList();
+		todoList.sort(Comparator.<TodoListInfo, LocalDateTime>comparing(TodoListInfo::getDeadLine).thenComparing(TodoListInfo::getPriority));
+		request.setAttribute("date_tomorrow", formattedDateTomorrow);
+		application.setAttribute("todoList", todoList);
 		request.getRequestDispatcher("WEB-INF/todolist.jsp").forward(request, response);
 	}
 }
