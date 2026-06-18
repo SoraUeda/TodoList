@@ -23,7 +23,7 @@ List<TodoListInfo> todoList = (List<TodoListInfo>) application.getAttribute("tod
 	<form action="TodoListServlet" method="post">
 		<div class="mb">タスク名: <input type="text" name="taskName"></div>
 		<div class="mb">${ error_taskName }</div>
-		<div class="mb">締切時刻: <input type="datetime-local" name="deadLine" value="${ date_now }"></div>
+		<div class="mb">締切時刻: <input type="datetime-local" name="deadLine" value="${ date_tomorrow }"></div>
 		<div class="mb">${ error_deadLine }</div>
 		<div class="mb">
 			優先度: <select name="priority">
